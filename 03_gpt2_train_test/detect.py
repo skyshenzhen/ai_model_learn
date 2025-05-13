@@ -6,18 +6,33 @@
 # Date:         2025/5/12
 # -------------------------------------------------------------------------------
 
-from transformers import AutoModelForCausalLM,AutoTokenizer,TextGenerationPipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, TextGenerationPipeline
 import torch
 
 model_path = r"/root/autodl-tmp/model/gpt-chinese/models--uer--gpt2-chinese-cluecorpussmall/snapshots/c2c0249d8a2731f269414cc3b22dff021f8e07a3"  # 预训练模型路径
 
+# Load tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 model = AutoModelForCausalLM.from_pretrained(model_path)
 
-#加载我们自己训练的权重（中文古诗词）
+# Load our fine-tuned weights (for Chinese classical poetry)
 model.load_state_dict(torch.load("params/net.pt"))
 
-#使用系统自带的pipeline工具生成内容
-pipeline = TextGenerationPipeline(model,tokenizer,device=0)
+# Create pipeline with explicit settings
+pipeline = TextGenerationPipeline(
+    model=model,
+    tokenizer=tokenizer,
+    device=0
+)
 
-print(pipeline("安子",max_length =24))
+# Generate poetry with proper parameters
+generation_params = {
+    'max_length': 24,
+    'truncation': True,  # Explicitly enable truncation
+    'do_sample': True,   # Usually better for creative text
+    'top_k': 50,        # Improves quality
+    'temperature': 0.7,  # Controls randomness
+    'num_return_sequences': 1
+}
+
+print(pipeline("白日", **generation_params))

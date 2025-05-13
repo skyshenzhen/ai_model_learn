@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+# -------------------------------------------------------------------------------
+# Name:         data.py
+# Description:  This is a script for loading data.
+# Author:       shaver
+# Date:         2025/5/12
+# -------------------------------------------------------------------------------
+
 from torch.utils.data import Dataset
 
 

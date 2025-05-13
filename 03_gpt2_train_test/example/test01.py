@@ -1,16 +1,16 @@
-#中文白话文文章生成
-from transformers import GPT2LMHeadModel,BertTokenizer,TextGenerationPipeline
+# 中文白话文文章生成
+from transformers import GPT2LMHeadModel, BertTokenizer, TextGenerationPipeline
 
-model_path = r"/root/autodl-tmp/model/gpt-chinese/models--uer--gpt2-chinese-cluecorpussmall/snapshots/c2c0249d8a2731f269414cc3b22dff021f8e07a3"
+model_path = r"/Users/shaver/PycharmProjects/ai_model_learn/03_gpt2_train_test/model/models--uer--gpt2-chinese-cluecorpussmall/snapshots/c2c0249d8a2731f269414cc3b22dff021f8e07a3"
 # 加载模型和分词器
 model = GPT2LMHeadModel.from_pretrained(model_path)
 tokenizer = BertTokenizer.from_pretrained(model_path)
 print(model)
 
-#使用Pipeline调用模型
-text_generator = TextGenerationPipeline(model,tokenizer,device="cuda")
+# 使用Pipeline调用模型
+text_generator = TextGenerationPipeline(model, tokenizer, device="cuda")
 
-#使用text_generator生成文本
-#do_sample是否进行随机采样。为True时，每次生成的结果都不一样；为False时，每次生成的结果都是相同的。
+# 使用text_generator生成文本
+# do_sample是否进行随机采样。为True时，每次生成的结果都不一样；为False时，每次生成的结果都是相同的。
 for i in range(3):
     print(text_generator("这是很久之前的事情了,", max_length=100, do_sample=True))
