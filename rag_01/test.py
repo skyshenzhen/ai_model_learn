@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from rag_01.chroma_data import create_collection, get_collection, insert_collection_data
 # -------------------------------------------------------------------------------
 # Name:         test
 # Description:
@@ -47,6 +47,50 @@ def test02():
     for vec in doc_vecs:
         print(l2(query_vec, vec))
 
+def test03():
+    # 模型下载
+    from modelscope import snapshot_download
+    model_dir = snapshot_download('AI-ModelScope/all-MiniLM-L6-v2', cache_dir='./models')
 
 if __name__ == '__main__':
-    test01()
+    # create_collection('my_collection')
+    # print("Collection created successfully")
+
+    collection = get_collection('my_collection')
+
+    results = collection.query(
+        query_texts=["RAG是什么？"],
+        n_results=3,
+        # where = {"source": "RAG"}, # 按元数据过滤
+        # where_document = {"$contains": "检索增强生成"} # 按文档内容过滤
+    )
+
+    print(results)
+
+
+
+
+    # try:
+    #     collection = get_collection('my_collection')
+    #     print("Collection exists with", collection.count(), "items")
+    #
+    #     collection.add(
+    #         documents=["RAG是一种检索增强生成技术", "向量数据库存储文档的嵌入表示",
+    #                    "在机器学习领域，智能体（Agent）通常指能够感知环境、做出决策并采取行动以实现特定目标的实体"],
+    #         metadatas=[{"source": "RAG"}, {"source": "向量数据库"}, {"source": "Agent"}],
+    #         ids=["id1", "id2", "id3"]
+    #     )
+    #
+    #
+    #     #
+    #     # data = {
+    #     #     'documents': ["RAG是一种检索增强生成技术", "向量数据库存储文档的嵌入表示", "在机器学习领域..."],
+    #     #     'metadatas': [{"source": "RAG"}, {"source": "向量数据库"}, {"source": "Agent"}],
+    #     #     'ids': ["id1", "id2", "id3"]
+    #     # }
+    #     #
+    #     # insert_collection_data(collection, data)
+    #     # print("Inserted successfully. New count:", collection.count())
+    #
+    # except Exception as e:
+    #     print("Error:", str(e))
