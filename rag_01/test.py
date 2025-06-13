@@ -11,9 +11,10 @@ from rag_01.tool import get_embeddings, cos_sim, l2
 
 def test01():
     """测试返回embedding向量"""
-    test_query = ["hello world"]
+    test_query = ["hello world", "你好，世界"]
+    print(f"Embedding length: {len(get_embeddings(test_query))}")
     vec = get_embeddings(test_query)[0]
-    print(f"Total dimension: {len(vec)}")
+    print(f"first vector Total dimension: {len(vec)}")
     print(f"First 10 elements: {vec[:10]}")
 
 
